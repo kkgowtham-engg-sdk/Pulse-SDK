@@ -6,6 +6,7 @@ homepage: https://pub.dev/
 
 environment:
   sdk: ">=2.19.0 <3.0.0"
+  flutter: ">=3.0.0"
 
 flutter:
   plugin:
@@ -20,8 +21,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  pulse_auth_platform_interface:
-    path: ../pulse_auth_platform_interface
+  pulse_auth_platform_interface: ^1.0.0
 
 dev_dependencies:
   flutter_test:
