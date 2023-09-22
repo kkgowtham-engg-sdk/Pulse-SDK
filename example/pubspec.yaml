@@ -1,0 +1,25 @@
+name: pulse_core_example
+description: Demonstrates how to use the pulse_core plugin.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pulse_core:
+  pulse_auth:
+  pulse_storage:
+
+
+dev_dependencies:
+  flutter_driver:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^4.0.0
+
+flutter:
+  uses-material-design: true
