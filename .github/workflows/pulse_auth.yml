@@ -10,10 +10,10 @@ jobs:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-    with:
-      working-directory: pulse_auth/pulse_auth
     steps:
+      - uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+        with:
+          working-directory: pulse_auth/pulse_auth
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
       - name: Install dependencies
