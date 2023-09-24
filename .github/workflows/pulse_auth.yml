@@ -8,14 +8,15 @@ on:
 jobs:
   publish:
     permissions:
-      id-token: write # Required for authentication using OIDC
+      id-token: write
     runs-on: ubuntu-latest
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      working-directory: pulse_auth/pulse_auth
     steps:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
-      - with:
-          working-directory: pulse_auth/pulse_auth
       - name: Install dependencies
-        run: flutter pub get
+        run: dart pub get
       - name: Publish
-        run: flutter pub publish --force
+        run: dart pub publish --force
