@@ -11,11 +11,10 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-        with:
-          working-directory: pulse_auth/pulse_auth
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
+        with:
+          working-directory: pulse_auth/pulse_auth
       - name: Install dependencies
         run: dart pub get
       - name: Publish
