@@ -29,4 +29,6 @@ jobs:
       - name: Get Dependencies
         run: melos get
       - name: Publish to pub.dev 🚀
-        run: melos publish --force
+        run:  melos publish --no-dry-run --git-tag-version --yes
+      - name: Git Push Tags
+        run: git push origin --tags
