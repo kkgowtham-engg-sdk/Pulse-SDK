@@ -22,6 +22,10 @@ jobs:
           cat <<EOF > $HOME/.config/dart/pub-credentials.json
           ${{ secrets.PUB_CREDS }}
           EOF
+      - name: Configure git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
       - name: Activate Melos
         run: dart pub global activate melos
       - name: Install dependencies
