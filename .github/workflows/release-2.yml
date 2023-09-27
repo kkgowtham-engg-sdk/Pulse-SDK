@@ -7,8 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # Required for authentication using OIDC
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
     steps:
+      - name: Setup Dart
+        uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
       - name: Checkout 🔔
         uses: actions/checkout@v3
       - name: Setup Flutter
