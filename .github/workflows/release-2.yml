@@ -8,10 +8,10 @@ jobs:
     permissions:
       id-token: write # Required for authentication using OIDC
     steps:
-      - name: Setup Dart
-        uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
       - name: Checkout 🔔
         uses: actions/checkout@v3
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
       - name: Setup Flutter
         run: |
           .github/scripts/setup.sh
