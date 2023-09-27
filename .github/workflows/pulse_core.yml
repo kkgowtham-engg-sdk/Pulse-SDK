@@ -27,5 +27,3 @@ jobs:
       - name: Publish to pub.dev 🚀
         working-directory: pulse_core/pulse_core
         run: dart pub publish --force
-      - name: Git Push Tags
-        run: git push origin --tags
