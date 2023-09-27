@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # Required for authentication using OIDC
-    with:
-      environment: pub.dev
     steps:
       - name: Checkout 🔔
         uses: actions/checkout@v3
