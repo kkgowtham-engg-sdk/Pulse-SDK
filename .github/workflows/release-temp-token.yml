@@ -1,0 +1,34 @@
+name: Publish to pub.dev
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    permissions:
+      id-token: write # Required for authentication using OIDC
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    steps:
+      - name: Checkout 🔔
+        uses: actions/checkout@v3
+      # Install dependencies
+      - name: Install Flutter 🎯
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Configure git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Activate Melos
+        run: dart pub global activate melos
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Melos Bootstrap
+        run: melos bootstrap
+      - name: Get Dependencies
+        run: melos get
+      - name: Publish to pub.dev 🚀
+        run:  melos publish --no-dry-run --git-tag-version --yes
+      - name: Git Push Tags
+        run: git push origin --tags
