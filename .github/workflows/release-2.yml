@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   publish:
+    runs-on: ubuntu-latest
     permissions:
       id-token: write # Required for authentication using OIDC
     uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
