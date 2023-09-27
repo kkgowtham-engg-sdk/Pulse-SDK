@@ -11,11 +11,9 @@ jobs:
     steps:
       - name: Checkout 🔔
         uses: actions/checkout@v3
-      # Install dependencies
-      - name: Install Flutter 🎯
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
+      - name: Setup Flutter
+        run: |
+          .github/scripts/setup.sh
       - name: Configure git
         run: |
           git config --local user.email "actions@github.com"
