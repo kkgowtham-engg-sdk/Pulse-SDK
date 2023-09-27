@@ -1,7 +1,6 @@
 name: Publish Plugins
+on: [workflow_dispatch]
 
-on:
-  workflow_dispatch:
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -14,7 +13,7 @@ jobs:
         uses: dart-lang/setup-dart@v1
       - name: Setup Flutter
         run: |
-          .github/scripts/setup.sh
+          chmod +x .github/scripts/setup.sh
       - name: Configure git
         run: |
           git config --local user.email "actions@github.com"
