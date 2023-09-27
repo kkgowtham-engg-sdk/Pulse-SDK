@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
 jobs:
   publish:
-    permissions:
-      id-token: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🔔
