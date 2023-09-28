@@ -4,7 +4,7 @@ PROJECTS_PATH="../../"
 tagName="${1}"
 echo "Tag Fetched - $tagName"
 pattern="-v[0-9]+\.[0-9]+\.[0-9]+$"
-packageName=$(echo tagName | sed -E "s/$pattern//")
+packageName=$(echo "$tagName" | sed -E "s/$pattern//")
 echo "$packageName"
 
 # Find all directories that contain a pubspec.yaml file (assuming these are Flutter projects)
