@@ -8,13 +8,15 @@ packageName=$(echo tagName | sed -E "s/$pattern//")
 
 # Find all directories that contain a pubspec.yaml file (assuming these are Flutter projects)
 FLUTTER_PROJECT_DIRS=$(find "$PROJECTS_PATH" -name "pubspec.yaml" -exec dirname {} \;)
+echo FLUTTER_PROJECT_DIRS
 # Iterate through each project directory and run 'flutter pub get'
 for dir in $FLUTTER_PROJECT_DIRS; do
+      echo dir
       if [[ "${dir: -${#packageName}}" == "$packageName" ]]; then
       pushd "$dir" > /dev/null
       echo "Running Flutter Pub Publish in $dir"
       flutter pub publish --force
       popd > /dev/null
-    fi
+      fi
 done
 echo "All Flutter projects updated."
