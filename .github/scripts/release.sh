@@ -5,10 +5,10 @@ tagName="${1}"
 echo "Tag Fetched - $tagName"
 pattern="-v[0-9]+\.[0-9]+\.[0-9]+$"
 packageName=$(echo tagName | sed -E "s/$pattern//")
+echo "$packageName"
 
 # Find all directories that contain a pubspec.yaml file (assuming these are Flutter projects)
 FLUTTER_PROJECT_DIRS=$(find "$PROJECTS_PATH" -name "pubspec.yaml" -exec dirname {} \;)
-echo "$FLUTTER_PROJECT_DIRS"
 # Iterate through each project directory and run 'flutter pub get'
 for dir in $FLUTTER_PROJECT_DIRS; do
       echo "$dir"
