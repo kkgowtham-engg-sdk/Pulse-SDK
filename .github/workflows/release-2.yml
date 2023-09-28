@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout 🔔
         uses: actions/checkout@v3
+        with:
+          repo-token: ${{secrets.GITHUB_TOKEN}}
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
       - name: Install Flutter 🎯
