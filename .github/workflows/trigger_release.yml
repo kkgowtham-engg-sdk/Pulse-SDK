@@ -29,5 +29,5 @@ jobs:
           chmod +x .github/scripts/release.sh
       - name: Publishing plugins
         run: |
-          .github/scripts/release.sh --arg "${{ github.ref }}"
+          .github/scripts/release.sh "${{ github.ref }}"
 
