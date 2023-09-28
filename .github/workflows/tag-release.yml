@@ -1,0 +1,32 @@
+name: Publish Tag Plugins
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for authentication using OIDC
+    steps:
+      - name: Checkout 🔔
+        uses: actions/checkout@v3
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+      # Install dependencies
+      - name: Install Flutter 🎯
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Configure git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Publish to pub.dev 🚀
+        run: |
+          chmod +x .github/scripts/release.sh
+      - name: Publishing plugins
+        run: |
+          .github/scripts/release.sh "${{ github.ref }}"
