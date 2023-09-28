@@ -3,7 +3,7 @@ name: Publish Tag Plugins
 on:
   push:
     tags:
-    - '*'
+      - '*'
 
 jobs:
   publish:
