@@ -21,15 +21,12 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
-      - name: Activate Melos
-        run: dart pub global activate melos
-      - name: Install dependencies
-        run: flutter pub get
-      - name: Melos Bootstrap
-        run: melos bootstrap
-      - name: Get Dependencies
-        run: melos get
-      - name: Publish to pub.dev 🚀
-        run:  melos publish --no-dry-run --git-tag-version --yes
+      - name: Git Create Tag
+        run: git tag pulse_core-v3.0.0
       - name: Git Push Tags
         run: git push origin --tags
+      - name: Activate Melos
+        run: dart pub global activate melos
+      - name: Publish to pub.dev 🚀
+        working-directory: pulse_core/pulse_core
+        run: flutter pub publish --force
