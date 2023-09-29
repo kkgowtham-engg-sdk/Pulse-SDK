@@ -1,0 +1,31 @@
+version: 2
+enable-beta-ecosystems: true
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_storage"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_storage/example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_storage_platform_interface"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_storage_android"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_storage_ios"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_storage_web"
+    schedule:
+      interval: "daily"

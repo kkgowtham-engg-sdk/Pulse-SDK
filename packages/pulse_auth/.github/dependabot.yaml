@@ -1,0 +1,31 @@
+version: 2
+enable-beta-ecosystems: true
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_auth"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_auth/example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_auth_platform_interface"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_auth_android"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_auth_ios"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pub"
+    directory: "/pulse_auth_web"
+    schedule:
+      interval: "daily"

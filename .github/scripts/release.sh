@@ -1,6 +1,6 @@
 #!/bin/bash
 # Replace 'YOUR_FLUTTER_PROJECTS_PATH' with the path to your main folder containing all Flutter projects
-PROJECTS_PATH="../../"
+PROJECTS_PATH="../../packages/"
 tagName="${1}"
 echo "Tag Fetched - $tagName"
 pattern="-v[0-9]+\.[0-9]+\.[0-9]+$"

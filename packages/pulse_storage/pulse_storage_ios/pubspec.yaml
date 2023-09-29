@@ -1,0 +1,27 @@
+name: pulse_storage_ios
+description: iOS implementation of the pulse_storage plugin
+version: 1.0.0
+homepage: https://pub.dev/
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+  flutter: ">=3.0.0"
+
+flutter:
+  plugin:
+    implements: pulse_storage
+    platforms:
+      ios:
+        pluginClass: PulseStoragePlugin
+        dartPluginClass: PulseStorageIOS
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pulse_storage_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.0
+  very_good_analysis: ^4.0.0

@@ -1,0 +1,28 @@
+name: pulse_storage_web
+description: Web implementation of the pulse_storage plugin
+version: 2.0.0
+homepage: https://pub.dev/
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+  flutter: ">=3.0.0"
+
+flutter:
+  plugin:
+    implements: pulse_storage
+    platforms:
+      web:
+        pluginClass: PulseStorageWeb
+        fileName: pulse_storage_web.dart
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  pulse_storage_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^4.0.0
