@@ -27,7 +27,7 @@ void main() {
           () => pulseAuthPlatform.getPlatformName(),
         ).thenAnswer((_) async => platformName);
 
-        final actualPlatformName = await getPlatformName();
+        final actualPlatformName = await getPlatformName1();
         expect(actualPlatformName, equals(platformName));
       });
 
@@ -37,7 +37,7 @@ void main() {
           () => pulseAuthPlatform.getPlatformName(),
         ).thenAnswer((_) async => null);
 
-        expect(getPlatformName, throwsException);
+        expect(getPlatformName1, throwsException);
       });
     });
   });
