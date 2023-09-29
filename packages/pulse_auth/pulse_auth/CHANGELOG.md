@@ -1,3 +1,7 @@
+## 1.1.0
+
+ - **FEAT**: some feature.
+
 # 29-09-2023
 
 ## Version
