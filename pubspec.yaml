@@ -1,4 +1,5 @@
 name: pulse_workspace
+publish_to: none
 
 environment:
   sdk: '>=2.18.0 <4.0.0'
