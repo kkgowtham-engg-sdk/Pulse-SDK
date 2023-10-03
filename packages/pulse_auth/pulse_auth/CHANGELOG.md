@@ -1,3 +1,9 @@
+# 3-10-2023
+
+## 2.0.0
+
+- [Breaking Change] Some Breaking Change
+
 ## 1.1.0
 
  - **FEAT**: some feature.
