@@ -14,9 +14,7 @@ jobs:
         with:
           channel: 'stable'
       - name: Set Up GCloud CLI
-        run: |
-          chmod +x .github/scripts/setup-gcloud.sh
-          .github/scripts/setup-gcloud.sh
+        run: snap install google-cloud-sdk --classic
       - name: Set Up Secrets
         run: |
           mkdir -p $HOME/key-file.json
