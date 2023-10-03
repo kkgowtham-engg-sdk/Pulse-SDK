@@ -1,7 +1,7 @@
 #!/bin/bash
 tag=$(git describe --tags --abbrev=0)
 
-PROJECTS_PATH=".."
+PROJECTS_PATH="../packages/"
 # Find all directories that contain a pubspec.yaml file (assuming these are Flutter projects)
 FLUTTER_PROJECT_DIRS=$(find "$PROJECTS_PATH" -name "pubspec.yaml" -exec dirname {} \;)
 # Iterate through each project directory and run 'flutter pub get'

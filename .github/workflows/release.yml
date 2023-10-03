@@ -1,0 +1,37 @@
+name: Release Service Account
+on: [workflow_dispatch]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🔔
+        uses: actions/checkout@v3
+
+      # Install dependencies
+      - name: Install Flutter 🎯
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Set Up Secrets
+        run: |
+          mkdir -p $HOME/.config/dart
+          cat <<EOF > $HOME/.config/dart/pub-credentials.json
+          ${{ secrets.PUB_CREDS }}
+          EOF
+      - name: Configure git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Activate Melos
+        run: dart pub global activate melos
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Melos Bootstrap
+        run: melos bootstrap
+      - name: Get Dependencies
+        run: melos get
+      - name: Publish to pub.dev 🚀
+        run:  melos publish --no-dry-run --git-tag-version --yes
+      - name: Git Push Tags
+        run: git push origin --tags

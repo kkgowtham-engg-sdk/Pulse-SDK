@@ -19,4 +19,4 @@ for dir in $FLUTTER_PROJECT_DIRS; do
       popd > /dev/null
       fi
 done
-echo "All Flutter projects updated."
+echo "Flutter packages Published"

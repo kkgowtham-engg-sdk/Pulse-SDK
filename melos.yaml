@@ -3,7 +3,9 @@ command:
   bootstrap:
     usePubspecOverrides: true
 packages:
-  - ./**
+  - packages/*
+  - packages/*/*
+  - packages/*/*/*
 scripts:
   analyze: melos exec -- flutter analyze
   format: melos exec -- dart format .

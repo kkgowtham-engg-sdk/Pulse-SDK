@@ -12,7 +12,6 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('PulseStoragePlatformInterface', () {
     late PulseStoragePlatform pulseStoragePlatform;
-
     setUp(() {
       pulseStoragePlatform = PulseStorageMock();
       PulseStoragePlatform.instance = pulseStoragePlatform;
