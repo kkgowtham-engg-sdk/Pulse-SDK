@@ -13,12 +13,20 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+      - name: Set Up GCloud CLI
+        run: |
+          chmod +x .github/scripts/setup-gcloud.sh
+          .github/scripts/setup-gcloud.sh
       - name: Set Up Secrets
         run: |
-          mkdir -p $HOME/.config/dart
-          cat <<EOF > $HOME/.config/dart/pub-credentials.json
-          ${{ secrets.PUB_CREDS }}
+          mkdir -p $HOME/key-file.json
+          cat <<EOF > $HOME/key-file.json
+          ${{ secrets.KEY_FILE }}
           EOF
+      - name: Authenticate GCloud
+        run: gcloud auth activate-service-account --key-file=$HOME/key-file.json
+      - name: Create Temp Token
+        run: gcloud auth print-identity-token --audiences=https://pub.dev | dart pub token add https://pub.dev
       - name: Configure git
         run: |
           git config --local user.email "actions@github.com"
