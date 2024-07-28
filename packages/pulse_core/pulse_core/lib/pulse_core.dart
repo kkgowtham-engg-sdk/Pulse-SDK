@@ -1,5 +1,7 @@
 import 'package:pulse_core_platform_interface/pulse_core_platform_interface.dart';
 
+export 'package:pulse_core_platform_interface/pulse_core_platform_interface.dart';
+
 PulseCorePlatform get _platform => PulseCorePlatform.instance;
 
 /// Returns the name of the current platform.

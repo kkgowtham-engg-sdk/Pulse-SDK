@@ -1,10 +1,10 @@
 name: pulse_auth
 description: Pulse Core Plugin
-version: 2.0.0
+version: 2.0.4
 homepage: https://pub.dev/
 
 environment:
-  sdk: ">=2.19.0 <3.0.0"
+  sdk: ">=2.19.0 <4.0.0"
   flutter: ">=3.0.0"
 
 flutter:
@@ -20,10 +20,11 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  pulse_auth_android: ^1.0.0
-  pulse_auth_ios: ^1.0.0
-  pulse_auth_platform_interface: ^1.0.0
-  pulse_auth_web: ^1.0.0
+  pulse_auth_android: 1.0.0
+  pulse_auth_ios: 1.0.0
+  pulse_auth_platform_interface: 1.0.1
+  pulse_auth_web: 1.0.0
+  pulse_core: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,6 @@
 name: pulse_core_ios
 description: iOS implementation of the pulse_core plugin
-version: 1.0.0
+version: 1.0.1
 homepage: https://pub.dev/
 
 environment:
@@ -18,7 +18,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  pulse_core_platform_interface: ^1.0.0
+  pulse_core_platform_interface: ^2.0.0
 
 dev_dependencies:
   flutter_test:

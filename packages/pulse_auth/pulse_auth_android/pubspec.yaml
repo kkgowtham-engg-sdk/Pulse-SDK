@@ -1,6 +1,6 @@
 name: pulse_auth_android
 description: Android implementation of the pulse_auth plugin
-version: 1.0.0
+version: 1.0.1
 homepage: https://pub.dev/
 
 environment:
