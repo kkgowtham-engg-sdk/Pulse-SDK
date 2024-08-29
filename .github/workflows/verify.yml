@@ -17,6 +17,28 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.10.0'
+      - name: Check Publish Warnings
+        run: |
+          outputs=$(melos exec --concurrency=1 --no-private --ignore="*example*" -- "flutter pub publish --dry-run" 2>&1)
+          critical_issue_detected=false
+          while IFS= read -r line; do
+            if echo "$line" | grep -q "Building package"; then
+              critical_issue_detected=false
+            fi
+            if echo "$line" | grep -q "Constraints that are too tight"; then
+              # Ignore strict versioning warning
+              continue
+            elif echo "$line" | grep -q -E "error:|warning:"; then
+              critical_issue_detected=true
+              # Print out the critical issue for debugging
+              echo "Critical issue detected: $line"
+            fi
+          done <<< "$outputs"
+          if [ "$critical_issue_detected" = true ]; then
+            echo "Critical issues detected. Failing the build step."
+            exit 1
+          fi
+        shell: bash
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
@@ -36,24 +58,3 @@ jobs:
         run: (cd example/android &&./gradlew ktlintcheck)
       - name: Run tests
         run: melos unittest
-      - name: Check Publish Warnings
-        run: |
-          outputs=$(melos exec --concurrency=1 --no-private --ignore="*example*" -- "flutter pub publish --dry-run" 2>&1)
-          critical_issue_detected=false
-          while IFS= read -r line; do
-            if echo "$line" | grep -q "Building package"; then
-              critical_issue_detected=false
-            fi
-            if echo "$line" | grep -q "Constraints that are too tight"; then
-              # Ignore strict versioning warning
-              continue
-            elif echo "$line" | grep -q -E "error:|warning:"; then
-              critical_issue_detected=true
-            fi
-            echo "$line"
-          done <<< "$outputs"
-          if [ "$critical_issue_detected" = true ]; then
-            echo "Critical issues detected. Failing the build step."
-            exit 1
-          fi
-        shell: bash
