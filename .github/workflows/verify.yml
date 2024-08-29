@@ -22,6 +22,8 @@ jobs:
         run: melos get
       - name: Analyze
         run: melos analyze
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Run Ktlint
         run: (cd example/android && ./gradlew ktlintcheck)
       - name: Run tests
