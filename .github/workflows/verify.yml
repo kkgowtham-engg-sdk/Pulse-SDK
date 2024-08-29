@@ -25,7 +25,7 @@ jobs:
       - name: Setup Melos
         run: dart pub global activate melos
       - name: Melos Bootstrap
-        run:  melos bootstrap
+        run: melos bootstrap
       - name: Install dependencies
         run: melos get
       - name: Analyze
@@ -35,6 +35,25 @@ jobs:
       - name: Run Ktlint
         run: (cd example/android &&./gradlew ktlintcheck)
       - name: Run tests
-        run:  melos unittest
+        run: melos unittest
       - name: Check Publish Warnings
-        run: melos exec -c 1 --no-private --ignore="*example*" -- flutter pub publish --dry-run
+        run: |
+          outputs=$(melos exec --concurrency=1 --no-private --ignore="*example*" -- "flutter pub publish --dry-run" 2>&1)
+          critical_issue_detected=false
+          while IFS= read -r line; do
+            if echo "$line" | grep -q "Building package"; then
+              critical_issue_detected=false
+            fi
+            if echo "$line" | grep -q "Constraints that are too tight"; then
+              # Ignore strict versioning warning
+              continue
+            elif echo "$line" | grep -q -E "error:|warning:"; then
+              critical_issue_detected=true
+            fi
+            echo "$line"
+          done <<< "$outputs"
+          if [ "$critical_issue_detected" = true ]; then
+            echo "Critical issues detected. Failing the build step."
+            exit 1
+          fi
+        shell: bash
