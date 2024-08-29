@@ -10,6 +10,7 @@ Future<String> getPlatformName1() async {
   return platformName;
 }
 
+/// Return version
 String getVersions() {
-  return getCoreVersion() + "___Auth_0.0.2";
+  return '${getCoreVersion()}___Auth_0.0.2';
 }

@@ -23,7 +23,7 @@ jobs:
       - name: Analyze
         run: melos analyze
       - name: Run Ktlint
-        run: (cd example/android && ./gradlew ktlintformat)
+        run: (cd example/android && ./gradlew ktlintcheck)
       - name: Run tests
         run:  melos unittest
       - name: Check Publish Warnings

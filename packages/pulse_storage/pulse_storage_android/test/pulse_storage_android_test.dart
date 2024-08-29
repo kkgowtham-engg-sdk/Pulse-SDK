@@ -15,7 +15,7 @@ void main() {
       pulseStorage = PulseStorageAndroid();
 
       log = <MethodCall>[];
-      TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(pulseStorage.methodChannel,
               (methodCall) async {
         log.add(methodCall);

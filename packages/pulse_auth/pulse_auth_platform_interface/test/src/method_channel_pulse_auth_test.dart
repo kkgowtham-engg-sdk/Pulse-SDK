@@ -11,16 +11,18 @@ void main() {
     final log = <MethodCall>[];
 
     setUp(() async {
-      methodChannelPulseAuth = MethodChannelPulseAuth()
-        ..methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-          log.add(methodCall);
-          switch (methodCall.method) {
-            case 'getPlatformName':
-              return kPlatformName;
-            default:
-              return null;
-          }
-        });
+      methodChannelPulseAuth = MethodChannelPulseAuth();
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(methodChannelPulseAuth.methodChannel,
+              (methodCall) async {
+        log.add(methodCall);
+        switch (methodCall.method) {
+          case 'getPlatformName':
+            return kPlatformName;
+          default:
+            return null;
+        }
+      });
     });
 
     tearDown(log.clear);

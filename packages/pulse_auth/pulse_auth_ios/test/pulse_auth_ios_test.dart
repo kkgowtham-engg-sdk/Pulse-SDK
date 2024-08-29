@@ -15,7 +15,7 @@ void main() {
       pulseAuth = PulseAuthIOS();
 
       log = <MethodCall>[];
-      TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(pulseAuth.methodChannel,
               (methodCall) async {
         log.add(methodCall);

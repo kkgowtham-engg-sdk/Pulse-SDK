@@ -1,7 +1,7 @@
-export 'some.dart';
-
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:pulse_core_platform_interface/src/method_channel_pulse_core.dart';
+
+export 'some.dart';
 
 /// The interface that implementations of pulse_core must implement.
 ///

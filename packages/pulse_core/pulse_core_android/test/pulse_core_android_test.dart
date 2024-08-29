@@ -15,7 +15,7 @@ void main() {
       pulseCore = PulseCoreAndroid();
 
       log = <MethodCall>[];
-      TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(pulseCore.methodChannel,
               (methodCall) async {
         log.add(methodCall);
