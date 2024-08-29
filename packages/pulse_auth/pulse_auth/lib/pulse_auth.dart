@@ -6,11 +6,9 @@ PulseAuthPlatform get _platform => PulseAuthPlatform.instance;
 /// Returns the name of the current platform.
 Future<String> getPlatformName1() async {
   final platformName = await _platform.getPlatformName();
-  if (platformName == null)
-    throw Exception('Unable  to get platform name.');
+  if (platformName == null) throw Exception('Unable  to get platform name.');
   return platformName;
 }
-
 
 String getVersions() {
   return getCoreVersion() + "___Auth_0.0.2";
