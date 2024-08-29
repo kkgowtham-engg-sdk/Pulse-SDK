@@ -1,6 +1,9 @@
 name: Verify Pull Request
 on:
   workflow_dispatch: # manual trigger
+  push:
+    branches:
+      - master
   pull_request:
     types: [ opened, reopened, ready_for_review, synchronize ]
     branches: [ "development", "master" ]
