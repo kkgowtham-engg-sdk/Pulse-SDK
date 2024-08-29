@@ -1,8 +1,8 @@
-export '';
-
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:pulse_storage_platform_interface/'
     'src/method_channel_pulse_storage.dart';
+
+export '';
 
 /// The interface that implementations of pulse_storage must implement.
 ///
