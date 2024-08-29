@@ -25,7 +25,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Run Ktlint
-        run: (cd example/android && ./gradlew ktlintcheck)
+        run: (cd example/android && flutter build apk &&./gradlew ktlintcheck)
       - name: Run tests
         run:  melos unittest
       - name: Check Publish Warnings
