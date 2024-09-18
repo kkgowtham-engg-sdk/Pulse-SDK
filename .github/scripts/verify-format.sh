@@ -5,8 +5,10 @@ unformatted_files=$(git ls-files --modified | grep ".*\.dart$")
 
 # Check if there are any modified (unformatted) files
 if [[ -n $unformatted_files ]]; then
+  printf "\n\n-------------------------\n\n"
   echo "The following files are not formatted correctly:"
   echo "$unformatted_files" # This will list the file names
+  printf "\n\n-------------------------\n\n"
 
   # Optionally checkout the files to discard changes if running in CI
   if [[ $GITHUB_WORKFLOW ]]; then
