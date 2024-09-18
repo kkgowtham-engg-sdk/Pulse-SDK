@@ -58,3 +58,5 @@ jobs:
         run: (cd example/android &&./gradlew ktlintcheck)
       - name: Run tests
         run: melos unittest
+      - name: Run Dry run
+        run: sh ../scripts/dry_run.sh
