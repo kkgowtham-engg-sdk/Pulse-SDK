@@ -1,5 +1,7 @@
 import 'package:pulse_auth_platform_interface/pulse_auth_platform_interface.dart';
 import 'package:pulse_core/pulse_core.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
 PulseAuthPlatform get _platform => PulseAuthPlatform.instance;
 
@@ -12,5 +14,6 @@ Future<String> getPlatformName1() async {
 
 /// Return version
 String getVersions() {
+
   return '${getCoreVersion()}___Auth_0.0.2';
 }
