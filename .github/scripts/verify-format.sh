@@ -1,7 +1,7 @@
 #!/bin/bash
 cd "$GITHUB_WORKSPACE" || exit
 echo "Current directory: $(pwd)"
-unformatted_files=$(git ls-files --modified)
+unformatted_files=$(git ls-files --modified | grep ".*\.dart$")
 
 # Check if there are any modified (unformatted) files
 if [[ -n $unformatted_files ]]; then
