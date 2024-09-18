@@ -36,7 +36,10 @@ jobs:
       - name: Run Dry run
         run: scripts/dry-run.sh
       - name: Validate Format
-        run: melos exec -c 1 -- dart format . && ./.github/scripts/verify-format.sh
+        run: |
+          chmod +x ./.github/scripts/verify-format.sh
+          melos exec -c 1 -- dart format .
+          ./.github/scripts/verify-format.sh
       - name: Analyze
         run: melos analyze
       - name: Flutter build APK
