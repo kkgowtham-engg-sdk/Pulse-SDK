@@ -28,6 +28,8 @@ jobs:
         run: melos bootstrap
       - name: Install dependencies
         run: melos get
+      - name: Run Dry run
+        run: scripts/dry-run.sh
       - name: Analyze
         run: melos analyze
       - name: Flutter build APK
@@ -36,5 +38,3 @@ jobs:
         run: (cd example/android &&./gradlew ktlintcheck)
       - name: Run tests
         run: melos unittest
-      - name: Run Dry run
-        run: ../scripts/dry-run.sh
