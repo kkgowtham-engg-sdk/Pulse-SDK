@@ -1,5 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$0")/.." || exit
+echo "Current directory: $(pwd)"
 unformatted_files=$(git ls-files --modified)
 
 # Check if there are any modified (unformatted) files
