@@ -1,5 +1,5 @@
 #!/bin/bash
-cd "$(dirname "$0")/.." || exit
+cd "$GITHUB_WORKSPACE" || exit
 echo "Current directory: $(pwd)"
 unformatted_files=$(git ls-files --modified)
 
