@@ -32,6 +32,9 @@ jobs:
         run: chmod +x scripts/dry-run.sh
       - name: Run Dry run
         run: scripts/dry-run.sh
+      - name: Validate Format
+        run: melos exec -c 1 -- \ "dart format ."
+          ./.github/workflows/scripts/validate-formatting.sh
       - name: Analyze
         run: melos analyze
       - name: Flutter build APK
@@ -40,6 +43,3 @@ jobs:
         run: (cd example/android &&./gradlew ktlintcheck)
       - name: Run tests
         run: melos unittest
-      - name: Validate Format
-        run: melos exec -c 1 -- \ "dart format ." 
-          ./.github/workflows/scripts/validate-formatting.sh
