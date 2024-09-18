@@ -1,4 +1,4 @@
-cd "$(dirname "$0")/.." || exit
+cd "$GITHUB_WORKSPACE" || exit
 echo "Current directory: $(pwd)"
 outputs=$( melos exec -c 1 --no-private --ignore="*example*" -- dart pub publish --dry-run)
 critical_issue_detected=false
