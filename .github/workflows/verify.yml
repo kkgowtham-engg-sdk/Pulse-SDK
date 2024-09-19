@@ -45,6 +45,6 @@ jobs:
       - name: Flutter build APK
         run: (cd example && flutter build apk)
       - name: Run Ktlint
-        run: (cd example/android &&./gradlew ktlintcheck)
+        run: (cd example/android && ./gradlew ktlintcheck)
       - name: Run tests
         run: melos unittest
