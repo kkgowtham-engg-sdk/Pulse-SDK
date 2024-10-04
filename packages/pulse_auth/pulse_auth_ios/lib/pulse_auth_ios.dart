@@ -15,6 +15,6 @@ class PulseAuthIOS extends PulseAuthPlatform {
 
   @override
   Future<String?> getPlatformName() {
-    return methodChannel.invokeMethod<String>('getPlatformName');
+    return methodChannel.invokeMethod<String>('getPlatformName1');
   }
 }
