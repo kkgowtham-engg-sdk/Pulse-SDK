@@ -7,18 +7,27 @@ const masterBranch = 'master';
 
 final Map<String, String> updatedPackages = {};
 
+enum VersionChange { major, minor, patch }
 
 Future<void> main(List<String> arguments) async {
-  final bumpType = arguments.isNotEmpty ? arguments[0] : 'minor';
+  final bumpType = arguments.isNotEmpty ? arguments[0] : 'major';
 
   final modules = Directory(modulesDir).listSync();
-  updatePackagesIfRequired(modules,bumpType);
+  print("---------Update Packages First Level----------");
+  await updatePackagesIfRequired(modules, bumpType);
+  print("----Updated Packages---");
+  updatedPackages.forEach((key, value) {
+    print("Package: $key, Version: $value");
+  });
+  print("---------Update Dependencies----------");
   processDependencies(updatedPackages, modules);
+  print("---------Update Packages Second Level----------");
   updatePackagesIfRequired(modules,bumpType);
   print('Version update complete.');
 }
 
-Future<void> updatePackagesIfRequired(List<FileSystemEntity> modules, String bumpType) async {
+Future<void> updatePackagesIfRequired(
+    List<FileSystemEntity> modules, String bumpType) async {
   for (var module in modules) {
     if (module is Directory) {
       print('Processing module in ${module.path}');
@@ -48,15 +57,14 @@ Future<void> updatePackagesIfRequired(List<FileSystemEntity> modules, String bum
                 }
                 print('Updated $pubspecPath to $newVersion');
               } else {
-                print(
-                    'No changes detected in ${package.path}. Bumping version.');
+                 //print( 'No changes detected in ${package.path}.');
                 continue;
               }
             } else {
-              print('No version found in $pubspecPath');
+             // print('No version found in $pubspecPath');
             }
           } else {
-            print('No pubspec.yaml found in ${package.path}');
+           // print('No pubspec.yaml found in ${package.path}');
           }
         }
       }
@@ -71,22 +79,15 @@ void processDependencies(
       if (module is Directory) {
         final packages = module.listSync();
         for (var package in packages) {
+          //print("Processing Package: $package");
           if (package is Directory) {
             final pubspecPath = '${package.path}/pubspec.yaml';
             final pubspecFile = File(pubspecPath);
             if (pubspecFile.existsSync()) {
-              var pubspecContent = pubspecFile.readAsStringSync();
-              // Check if this package file contains a dependency on the updated module
-              if (pubspecContent.contains('  $moduleName:')) {
-                final newVersion = updatedPackages[moduleName]!;
-                // Update the dependency version
-                final regex = RegExp('  $moduleName:.*');
-                pubspecContent = pubspecContent.replaceAll(
-                    regex, '  $moduleName: $newVersion');
-                pubspecFile.writeAsStringSync(pubspecContent);
-                print(
-                    'Updated dependency $moduleName in $pubspecPath to version $newVersion');
-              }
+              updateDependencyVersion(
+                  pubspecFilePath: pubspecPath,
+                  moduleName: moduleName,
+                  versionChange: VersionChange.major);
             }
           }
         }
@@ -183,7 +184,63 @@ Future<bool> isPackageVersionUpdateRequired(
 }
 
 Future<bool> hasUncommittedChanges(String packagePath) async {
-  final status = await executeCommand('git', ['status', '--porcelain', packagePath]);
-  print("Has Uncommited Changes: ${status.isNotEmpty}");
+  final status =
+  await executeCommand('git', ['status', '--porcelain', packagePath]);
+  if(status.isNotEmpty){
+    print("Has Uncommited Changes: ${status.isNotEmpty} in Package Path: $packagePath");
+  }
   return status.isNotEmpty;
+}
+
+void updateDependencyVersion({
+  required String pubspecFilePath,
+  required String moduleName,
+  required VersionChange versionChange,
+}) {
+  final pubspecFile = File(pubspecFilePath);
+  String pubspecContent = pubspecFile.readAsStringSync();
+
+  //final regex = RegExp('  $moduleName: ([0-9]+.[0-9]+.[0-9]+)');
+  final regex = RegExp('  $moduleName: (\\^?[0-9]+\\.[0-9]+\\.[0-9]+)');
+
+  final currentVersionMatch = regex.firstMatch(pubspecContent);
+  if (currentVersionMatch != null) {
+    final currentVersion = Version.parse(currentVersionMatch.group(1)!.replaceAll("^", ""));
+    Version newVersion;
+
+    switch (versionChange) {
+      case VersionChange.major:
+        newVersion = currentVersion.nextMajor;
+        break;
+      case VersionChange.minor:
+        newVersion = currentVersion.nextMinor;
+        break;
+      case VersionChange.patch:
+        newVersion = currentVersion.nextPatch;
+        break;
+    }
+    final currentVersionString = currentVersionMatch.group(1)!;
+    final isCaretVersion = currentVersionString.startsWith('^');
+    // If it's a caret version, only update if it's a major version change.
+    if (isCaretVersion && versionChange != VersionChange.major) {
+      print('Skipping non-major version update for caret version of $moduleName in $pubspecFilePath ');
+      return;
+    }
+
+    if(isCaretVersion){
+      // Replace the current version with the new version in the pubspec content.
+      pubspecContent = pubspecContent.replaceFirst(currentVersionMatch.group(0)!,
+          '  $moduleName: ^${newVersion.toString()}');
+    }else{
+      // Replace the current version with the new version in the pubspec content.
+      pubspecContent = pubspecContent.replaceFirst(currentVersionMatch.group(0)!,
+          '  $moduleName: ${newVersion.toString()}');
+    }
+
+    // Write the updated content to the pubspec file.
+    pubspecFile.writeAsStringSync(pubspecContent);
+    print('Updated1 $moduleName version to $newVersion in $pubspecFilePath');
+  } else {
+    print('Updated1 Version string for $moduleName not found in $pubspecFilePath');
+  }
 }
