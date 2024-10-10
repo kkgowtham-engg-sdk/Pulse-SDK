@@ -10,7 +10,7 @@ final Map<String, String> updatedPackages = {};
 enum VersionChange { major, minor, patch }
 
 Future<void> main(List<String> arguments) async {
-  final bumpType = arguments.isNotEmpty ? arguments[0] : 'major';
+  final bumpType = arguments.isNotEmpty ? arguments[0] : 'minor';
 
   final modules = Directory(modulesDir).listSync();
   print("---------Update Packages First Level----------");
@@ -24,6 +24,8 @@ Future<void> main(List<String> arguments) async {
   print("---------Update Packages Second Level----------");
   updatePackagesIfRequired(modules,bumpType);
   print('Version update complete.');
+  print("---------Second Level Update Dependencies----------");
+  processDependencies(updatedPackages, modules);
 }
 
 Future<void> updatePackagesIfRequired(
@@ -39,9 +41,14 @@ Future<void> updatePackagesIfRequired(
           if (pubspecFile.existsSync()) {
             var pubspecContent = pubspecFile.readAsStringSync();
             final versionString = _extractVersion(pubspecContent);
-            if (versionString != null) {
-              if (await isPackageVersionUpdateRequired(
-                  package.path, masterBranch)) {
+            final packageName = getPackageName(pubspecContent);
+
+            if (versionString != null && packageName != null) {
+              if (updatedPackages.containsKey(packageName)) {
+                print('Package $packageName is already updated to ${updatedPackages[packageName]}. Skipping update.');
+                continue;
+              }
+              if (await isPackageVersionUpdateRequired(package.path, masterBranch)) {
                 print(
                     'Changes detected in ${package.path}. Doing Version Bump.');
 
@@ -204,8 +211,17 @@ void updateDependencyVersion({
   final regex = RegExp('  $moduleName: (\\^?[0-9]+\\.[0-9]+\\.[0-9]+)');
 
   final currentVersionMatch = regex.firstMatch(pubspecContent);
+
+
   if (currentVersionMatch != null) {
     final currentVersion = Version.parse(currentVersionMatch.group(1)!.replaceAll("^", ""));
+    final newVersionInMap = updatedPackages[moduleName];
+    if (newVersionInMap != null && currentVersion.toString() == newVersionInMap) {
+      // The version has already been updated, skip the updates
+      print('Dependency $moduleName in $pubspecFilePath is already updated to $newVersionInMap. Skipping update.');
+      return;
+    }
+
     Version newVersion;
 
     switch (versionChange) {
