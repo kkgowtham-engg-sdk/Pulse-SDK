@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:pub_semver/pub_semver.dart';
+import 'package:intl/intl.dart';
 
 final modulesDir = 'packages';
 const masterBranch = 'master';
@@ -15,17 +16,15 @@ Future<void> main(List<String> arguments) async {
   final modules = Directory(modulesDir).listSync();
   print("---------Update Packages First Level----------");
   await updatePackagesIfRequired(modules, bumpType);
-  print("----Updated Packages---");
-  updatedPackages.forEach((key, value) {
-    print("Package: $key, Version: $value");
-  });
   print("---------Update Dependencies----------");
   processDependencies(updatedPackages, modules);
   print("---------Update Packages Second Level----------");
-  updatePackagesIfRequired(modules,bumpType);
-  print('Version update complete.');
+  updatePackagesIfRequired(modules, bumpType);
   print("---------Second Level Update Dependencies----------");
   processDependencies(updatedPackages, modules);
+  print('Version update complete.');
+
+  updateChangeLog(modules);
 }
 
 Future<void> updatePackagesIfRequired(
@@ -45,10 +44,12 @@ Future<void> updatePackagesIfRequired(
 
             if (versionString != null && packageName != null) {
               if (updatedPackages.containsKey(packageName)) {
-                print('Package $packageName is already updated to ${updatedPackages[packageName]}. Skipping update.');
+                print(
+                    'Package $packageName is already updated to ${updatedPackages[packageName]}. Skipping update.');
                 continue;
               }
-              if (await isPackageVersionUpdateRequired(package.path, masterBranch)) {
+              if (await isPackageVersionUpdateRequired(
+                  package.path, masterBranch)) {
                 print(
                     'Changes detected in ${package.path}. Doing Version Bump.');
 
@@ -64,14 +65,9 @@ Future<void> updatePackagesIfRequired(
                 }
                 print('Updated $pubspecPath to $newVersion');
               } else {
-                 //print( 'No changes detected in ${package.path}.');
                 continue;
               }
-            } else {
-             // print('No version found in $pubspecPath');
             }
-          } else {
-           // print('No pubspec.yaml found in ${package.path}');
           }
         }
       }
@@ -86,7 +82,6 @@ void processDependencies(
       if (module is Directory) {
         final packages = module.listSync();
         for (var package in packages) {
-          //print("Processing Package: $package");
           if (package is Directory) {
             final pubspecPath = '${package.path}/pubspec.yaml';
             final pubspecFile = File(pubspecPath);
@@ -192,9 +187,10 @@ Future<bool> isPackageVersionUpdateRequired(
 
 Future<bool> hasUncommittedChanges(String packagePath) async {
   final status =
-  await executeCommand('git', ['status', '--porcelain', packagePath]);
-  if(status.isNotEmpty){
-    print("Has Uncommited Changes: ${status.isNotEmpty} in Package Path: $packagePath");
+      await executeCommand('git', ['status', '--porcelain', packagePath]);
+  if (status.isNotEmpty) {
+    print(
+        "Has Uncommited Changes: ${status.isNotEmpty} in Package Path: $packagePath");
   }
   return status.isNotEmpty;
 }
@@ -207,18 +203,19 @@ void updateDependencyVersion({
   final pubspecFile = File(pubspecFilePath);
   String pubspecContent = pubspecFile.readAsStringSync();
 
-  //final regex = RegExp('  $moduleName: ([0-9]+.[0-9]+.[0-9]+)');
   final regex = RegExp('  $moduleName: (\\^?[0-9]+\\.[0-9]+\\.[0-9]+)');
 
   final currentVersionMatch = regex.firstMatch(pubspecContent);
 
-
   if (currentVersionMatch != null) {
-    final currentVersion = Version.parse(currentVersionMatch.group(1)!.replaceAll("^", ""));
+    final currentVersion =
+        Version.parse(currentVersionMatch.group(1)!.replaceAll("^", ""));
     final newVersionInMap = updatedPackages[moduleName];
-    if (newVersionInMap != null && currentVersion.toString() == newVersionInMap) {
+    if (newVersionInMap != null &&
+        currentVersion.toString() == newVersionInMap) {
       // The version has already been updated, skip the updates
-      print('Dependency $moduleName in $pubspecFilePath is already updated to $newVersionInMap. Skipping update.');
+      print(
+          'Dependency $moduleName in $pubspecFilePath is already updated to $newVersionInMap. Skipping update.');
       return;
     }
 
@@ -239,24 +236,69 @@ void updateDependencyVersion({
     final isCaretVersion = currentVersionString.startsWith('^');
     // If it's a caret version, only update if it's a major version change.
     if (isCaretVersion && versionChange != VersionChange.major) {
-      print('Skipping non-major version update for caret version of $moduleName in $pubspecFilePath ');
+      print(
+          'Skipping non-major version update for caret version of $moduleName in $pubspecFilePath ');
       return;
     }
 
-    if(isCaretVersion){
+    if (isCaretVersion) {
       // Replace the current version with the new version in the pubspec content.
-      pubspecContent = pubspecContent.replaceFirst(currentVersionMatch.group(0)!,
+      pubspecContent = pubspecContent.replaceFirst(
+          currentVersionMatch.group(0)!,
           '  $moduleName: ^${newVersion.toString()}');
-    }else{
+    } else {
       // Replace the current version with the new version in the pubspec content.
-      pubspecContent = pubspecContent.replaceFirst(currentVersionMatch.group(0)!,
+      pubspecContent = pubspecContent.replaceFirst(
+          currentVersionMatch.group(0)!,
           '  $moduleName: ${newVersion.toString()}');
     }
 
     // Write the updated content to the pubspec file.
     pubspecFile.writeAsStringSync(pubspecContent);
-    print('Updated1 $moduleName version to $newVersion in $pubspecFilePath');
-  } else {
-    print('Updated1 Version string for $moduleName not found in $pubspecFilePath');
+    print('Updated $moduleName version to $newVersion in $pubspecFilePath');
+  }
+}
+
+Future<void> updateChangeLog(List<FileSystemEntity> modules) async {
+  final dateFormatter = DateFormat('dd-MM-yyyy');
+  final todayFormatted = dateFormatter.format(DateTime.now());
+
+  for (final module in modules) {
+    if (module is Directory) {
+      final packages = module.listSync();
+      for (final package in packages) {
+        if (package is Directory && updatedPackages.containsKey(package.uri.pathSegments.last)) {
+          final changelogPath = '${package.path}/CHANGELOG.md';
+          final changelogFile = File(changelogPath);
+
+          // Ensure we have a changelog file, otherwise, create it
+          changelogFile.createSync(recursive: true);
+
+          final packageName = package.uri.pathSegments.last;
+          final newVersion = updatedPackages[packageName] ?? '0.0.1';
+          var changelogContent = changelogFile.readAsStringSync();
+
+          final newChangelogEntry = '''
+# $todayFormatted
+
+## $newVersion
+- Internal improvements.
+
+''';
+
+          final headerIndex = changelogContent.indexOf('\n');
+          if (headerIndex != -1) {
+            changelogContent = changelogContent.replaceRange(headerIndex + 1, headerIndex + 1, newChangelogEntry);
+          } else {
+            // If the file is completely empty, just add the new entry
+            changelogContent = newChangelogEntry;
+          }
+
+          // Write the updated content to the Changelog file.
+          changelogFile.writeAsStringSync(changelogContent);
+          print('Updated CHANGELOG.md for $packageName at $changelogPath');
+        }
+      }
+    }
   }
 }
