@@ -38,6 +38,10 @@ jobs:
         run: gcloud auth activate-service-account --key-file=$HOME/key-file.json
       - name: Create pub.dev Temporary Token
         run: gcloud auth print-identity-token --audiences=https://pub.dev | dart pub token add https://pub.dev
+      - name: Script setup
+        working-directory: source
+        run: |
+          chmod +x .github/scripts/release.main.kts
       - name: Publishing plugins
         working-directory: source
         run: |
