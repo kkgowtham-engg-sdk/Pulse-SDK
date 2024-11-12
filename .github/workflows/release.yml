@@ -21,6 +21,12 @@ jobs:
           fetch-tags: true
           path: source
           token: ${{ secrets.ACCESS_TOKEN }}
+      - name: Melos Bootstrap
+        working-directory: source
+        run: melos bootstrap
+      - name: Install dependencies
+        working-directory: source
+        run: melos get
       - name: Set Up GCloud CLI
         run: sudo snap install google-cloud-sdk --classic
       - name: Set Up Secrets
