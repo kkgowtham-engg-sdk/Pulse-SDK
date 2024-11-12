@@ -18,6 +18,7 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+          path: source
           token: ${{ secrets.ACCESS_TOKEN }}
       - name: List Files
         run: cd .. && ls -R
@@ -41,16 +42,19 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
       - name: Activate Melos
+        working-directory: source
         run: dart pub global activate melos
-      - name: Install dependencies
-        run: flutter pub get
       - name: Melos Bootstrap
+        working-directory: source
         run: melos bootstrap
       - name: Get Dependencies
+        working-directory: source
         run: melos get
       - name: Script setup
+        working-directory: source
         run: |
           chmod +x .github/scripts/release.main.kts
       - name: Publishing plugins
+        working-directory: source
         run: |
           .github/scripts/release.main.kts
