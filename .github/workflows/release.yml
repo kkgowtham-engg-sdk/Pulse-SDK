@@ -16,6 +16,7 @@ jobs:
       - name: Checkout 🔔
         uses: actions/checkout@v3
         with:
+          path: source
           fetch-depth: 0
           fetch-tags: true
           token: ${{ secrets.ACCESS_TOKEN }}
@@ -47,8 +48,10 @@ jobs:
       - name: Get Dependencies
         run: melos get
       - name: Script setup
+        working-directory: source
         run: |
           chmod +x .github/scripts/release.main.kts
       - name: Publishing plugins
+        working-directory: source
         run: |
           .github/scripts/release.main.kts
