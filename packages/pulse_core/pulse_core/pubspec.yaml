@@ -1,6 +1,6 @@
 name: pulse_core
 description: Pulse Core Plugin
-version: 4.0.5
+version: 4.0.6
 homepage: https://pub.dev/
 
 environment:
@@ -20,7 +20,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  pulse_core_android: 1.0.1
+  pulse_core_android: 1.0.2
   pulse_core_ios: 1.0.1
   pulse_core_platform_interface: 2.0.2
   pulse_core_web: 1.0.1

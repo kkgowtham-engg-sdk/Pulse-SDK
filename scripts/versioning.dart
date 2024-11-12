@@ -267,7 +267,8 @@ Future<void> updateChangeLog(List<FileSystemEntity> modules) async {
     if (module is Directory) {
       final packages = module.listSync();
       for (final package in packages) {
-        if (package is Directory && updatedPackages.containsKey(package.uri.pathSegments.last)) {
+        if (package is Directory &&
+            updatedPackages.containsKey(package.uri.pathSegments.last)) {
           final changelogPath = '${package.path}/CHANGELOG.md';
           final changelogFile = File(changelogPath);
 
@@ -288,7 +289,8 @@ Future<void> updateChangeLog(List<FileSystemEntity> modules) async {
 
           final headerIndex = changelogContent.indexOf('\n');
           if (headerIndex != -1) {
-            changelogContent = changelogContent.replaceRange(headerIndex + 1, headerIndex + 1, newChangelogEntry);
+            changelogContent = changelogContent.replaceRange(
+                headerIndex + 1, headerIndex + 1, newChangelogEntry);
           } else {
             // If the file is completely empty, just add the new entry
             changelogContent = newChangelogEntry;

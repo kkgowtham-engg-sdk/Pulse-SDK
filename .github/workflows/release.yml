@@ -5,10 +5,20 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout sdk automation scripts
+        uses: actions/checkout@v3
+        with:
+          repository: moengage/sdk-automation-scripts
+          path: sdk-automation-scripts
+          token: ${{ secrets.ACCESS_TOKEN }}
+      - name: Automation script setup
+        uses: ./sdk-automation-scripts/actions/action-setup
       - name: Checkout 🔔
         uses: actions/checkout@v3
-
-      # Install dependencies
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          token: ${{ secrets.ACCESS_TOKEN }}
       - name: Install Flutter 🎯
         uses: subosito/flutter-action@v2
         with:
@@ -36,7 +46,11 @@ jobs:
         run: melos bootstrap
       - name: Get Dependencies
         run: melos get
-      - name: Publish to pub.dev 🚀
-        run:  melos publish --no-dry-run --git-tag-version --yes
-      - name: Git Push Tags
-        run: git push origin --tags
+      - name: Script setup
+        working-directory: source
+        run: |
+          chmod +x .github/scripts/release.main.kts
+      - name: Publishing plugins
+        working-directory: source
+        run: |
+          .github/scripts/release.main.kts

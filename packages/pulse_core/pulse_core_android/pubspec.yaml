@@ -1,6 +1,6 @@
 name: pulse_core_android
 description: Android implementation of the pulse_core plugin
-version: 1.0.1
+version: 1.0.2
 homepage: https://pub.dev/
 
 environment:
