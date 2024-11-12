@@ -1,6 +1,6 @@
 name: pulse_auth
 description: Pulse Core Plugin
-version: 3.0.0
+version: 3.0.1
 homepage: https://pub.dev/
 
 environment:
