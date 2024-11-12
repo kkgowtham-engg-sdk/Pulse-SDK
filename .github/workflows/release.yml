@@ -9,10 +9,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: moengage/sdk-automation-scripts
+          ref: 'MOEN-34394_flutter_scripts'
           path: sdk-automation-scripts
           token: ${{ secrets.ACCESS_TOKEN }}
       - name: Automation script setup
-        uses: ./sdk-automation-scripts/actions/action-setup
+        uses: ./sdk-automation-scripts/actions/flutter-repository-setup
       - name: Checkout 🔔
         uses: actions/checkout@v3
         with:
@@ -20,12 +21,6 @@ jobs:
           fetch-tags: true
           path: source
           token: ${{ secrets.ACCESS_TOKEN }}
-      - name: List Files
-        run: cd .. && ls -R
-      - name: Install Flutter 🎯
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
       - name: Set Up GCloud CLI
         run: sudo snap install google-cloud-sdk --classic
       - name: Set Up Secrets
@@ -35,26 +30,8 @@ jobs:
           EOF
       - name: Authenticate GCloud
         run: gcloud auth activate-service-account --key-file=$HOME/key-file.json
-      - name: Create Temp Token
+      - name: Create pub.dev Temporary Token
         run: gcloud auth print-identity-token --audiences=https://pub.dev | dart pub token add https://pub.dev
-      - name: Configure git
-        working-directory: source
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "Github Actions"
-      - name: Activate Melos
-        working-directory: source
-        run: dart pub global activate melos
-      - name: Melos Bootstrap
-        working-directory: source
-        run: melos bootstrap
-      - name: Get Dependencies
-        working-directory: source
-        run: melos get
-      - name: Script setup
-        working-directory: source
-        run: |
-          chmod +x .github/scripts/release.main.kts
       - name: Publishing plugins
         working-directory: source
         run: |
