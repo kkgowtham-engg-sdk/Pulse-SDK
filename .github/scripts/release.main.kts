@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin
 
-@file:Import("../../../sdk-automation-scripts/scripts/utils/git-utils.kt")
-@file:Import("../scripts/utils.main.kts")
+@file:Import("../../../../sdk-automation-scripts/scripts/utils/git-utils.kt")
+@file:Import("../../../../sdk-automation-scripts/scripts/utils/common-utils.kt")
 
 fun releasePlugins(){
     println("Merge development branch to master")
