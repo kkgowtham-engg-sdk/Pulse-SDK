@@ -19,6 +19,8 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           token: ${{ secrets.ACCESS_TOKEN }}
+      - name: List Files
+        run: cd .. && ls -R
       - name: Install Flutter 🎯
         uses: subosito/flutter-action@v2
         with:
@@ -46,8 +48,6 @@ jobs:
         run: melos bootstrap
       - name: Get Dependencies
         run: melos get
-      - name: List Files
-        run: ls
       - name: Script setup
         run: |
           chmod +x .github/scripts/release.main.kts
