@@ -48,7 +48,6 @@ jobs:
       - name: Get Dependencies
         run: melos get
       - name: List Files
-        working-directory: source
         run: ls
       - name: Script setup
         working-directory: source
