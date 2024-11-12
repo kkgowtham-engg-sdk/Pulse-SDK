@@ -38,6 +38,7 @@ jobs:
       - name: Create Temp Token
         run: gcloud auth print-identity-token --audiences=https://pub.dev | dart pub token add https://pub.dev
       - name: Configure git
+        working-directory: source
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
