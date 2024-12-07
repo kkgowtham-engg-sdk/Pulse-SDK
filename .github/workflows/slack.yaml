@@ -41,6 +41,8 @@ jobs:
         uses: slackapi/slack-github-action@v1.24.0
         with:
           payload: |
-            {"text": "Some thing cooking."}
+            text: "Something cooking."
+            file: "build/app/outputs/flutter-apk/app-release.apk"
+            filename: "results-${{ github.sha }}.out"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
