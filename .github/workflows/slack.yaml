@@ -1,0 +1,44 @@
+name: Slack Notifier
+on: [workflow_dispatch]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🔔
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          path: source
+          token: ${{ secrets.ACCESS_TOKEN }}
+      - name: Install Flutter 🎯
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Configure git
+        working-directory: source
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Activate Melos
+        working-directory: source
+        run: dart pub global activate melos
+      - name: Melos Bootstrap
+        working-directory: source
+        run: melos bootstrap
+      - name: Get Dependencies
+        working-directory: source
+        run: melos get
+      - name: Flutter Build
+        working-directory: source
+        run: cd example && flutter build apk --release
+      - name: Send notification on Slack using Webhooks
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+            "text": "Flutter Apk Build"
+            }
+        env:
+          SLACK_WEBHOOK_URL:https://hooks.slack.com/services/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
