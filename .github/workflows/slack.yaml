@@ -43,4 +43,4 @@ jobs:
           payload: |
             {"text": "Danny Torrence left a 1 star review for your property."}
         env:
-          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
