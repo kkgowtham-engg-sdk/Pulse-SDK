@@ -43,4 +43,4 @@ jobs:
           payload: |
             {"text": "Some thing cooking."}
         env:
-          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK_URL: env.SLACK_WEBHOOK
